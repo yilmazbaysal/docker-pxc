@@ -13,7 +13,7 @@ MY_CONFIG_FILE="/etc/mysql/my.cnf"
 
 # Set 'wsrep_cluster_address' to given list of ip adresses
 if [[ $IP_ADDRESSES ]]; then
-	sed -i '10i\wsrep_cluster_address=gcomm://'$IP_ADDRESSES $MY_CONFIG_FILE 
+	sed -i '10i\wsrep_cluster_address=gcomm://'$(hostname -i)','$IP_ADDRESSES $MY_CONFIG_FILE 
 	sed -i '11d' $MY_CONFIG_FILE
 fi
 
@@ -24,7 +24,7 @@ sed -i '23d' $MY_CONFIG_FILE
 #Set 'wsrep_sst_auth' accordingly
 sed -i '31i\wsrep_sst_auth="sstuser:'$SST_USER_PASS'"' $MY_CONFIG_FILE 
 sed -i '32d' $MY_CONFIG_FILE
-
+########## Set my.cnf files accordingly ##########
 
 if [[ $MASTER ]]; then  # If the node is master
 	service mysql bootstrap-pxc
