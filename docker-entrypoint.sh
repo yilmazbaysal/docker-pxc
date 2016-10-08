@@ -11,9 +11,19 @@ fi
 IP="$(hostname -i)"
 MY_CONFIG_FILE="/etc/mysql/my.cnf"
 
+# Set 'wsrep_cluster_address' to given list of ip adresses
+if [[ $IP_ADDRESSES ]]; then
+	sed -i '10i\wsrep_cluster_address=gcomm://'$IP_ADDRESSES $MY_CONFIG_FILE 
+	sed -i '11d' $MY_CONFIG_FILE
+fi
+
 # Set 'wsrep_node_address' to the ip address of the current node
 sed -i '22i\wsrep_node_address='$IP $MY_CONFIG_FILE 
 sed -i '23d' $MY_CONFIG_FILE
+
+#Set 'wsrep_sst_auth' accordingly
+sed -i '31i\wsrep_sst_auth="sstuser:'$SST_USER_PASS'"' $MY_CONFIG_FILE 
+sed -i '32d' $MY_CONFIG_FILE
 
 
 if [[ $MASTER ]]; then  # If the node is master
@@ -28,4 +38,3 @@ else # If the node is a member
 fi
 
 bash
-
