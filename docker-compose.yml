@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  master:
+    build: .
+    container_name: master
+    #environment:
+    #volumes:
+    #working_dir: /
+    #command: sh /scripts/master.sh
+
+  member:
+    build: .
+    #container_name: member
+    #environment:
+    #volumes:
+    #working_dir: /
+    #command: sh /scripts/master.sh
