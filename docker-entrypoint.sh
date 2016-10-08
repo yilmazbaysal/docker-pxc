@@ -5,4 +5,3 @@ if [[ $TEST ]]; then
 	echo $TEST
 fi
 
-bash
