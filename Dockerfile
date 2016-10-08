@@ -18,3 +18,10 @@ VOLUME ["/var/lib/mysql", "/var/log/mysql"] # Make mysql data volumes
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 ENTRYPOINT ["docker-entrypoint.sh"]
+
+#______________
+#| '_ \ \/ / __|
+#| |_) >  < (__ 
+#| .__/_/\_\___|
+#|_|            
+
