@@ -27,6 +27,10 @@ sed -i 's/^wsrep_node_address=.*/wsrep_node_address='"$IP"'/' $MY_CONFIG_FILE
 sed -i 's/^wsrep_sst_auth=.*/wsrep_sst_auth="sstuser:'"$SST_USER_PASS"'"/' $MY_CONFIG_FILE
 ##################################################
 
+# Start the Galera Arbitrator
+service garbd start
+
+# Start the mysql
 if [[ ${MASTER^^} == TRUE ]]; then  # If the node is master
 	service mysql bootstrap-pxc
 

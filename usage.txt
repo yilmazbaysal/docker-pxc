@@ -1,5 +1,5 @@
 # Create the docker image
-docker -t {docker_image_name} {path_of_the_dockerfile}
+docker build -t {docker_image_name} {path_of_the_dockerfile}
 
 # Run the master node
 master: docker run -it --name pxc1 -e MASTER=True -e IP={machine1_ip} -e IP_ADDRESSES={machine2_ip,machine3_ip} -e SST_USER_PASS={password} -p 3306:3306 -p 4567:4567 -p 4444:4444 -p 4568:4568 {docker_image_name}
