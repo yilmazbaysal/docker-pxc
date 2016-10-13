@@ -1,32 +1,33 @@
 #!/bin/bash
 set -eo pipefail
 
-# SST_USER PASS must be the same across all the nodes.
+# SST_USER_PASS must be the same across all the nodes.
 if [[ -z $SST_USER_PASS ]]; then
-	echo "SST_USER_PASS must be set for master node."
+	echo "SST_USER_PASS must be set for all nodes."
 	exit 1
 fi
 
+# IP must be set to the ip address of the host machine for publish.
+if [[ -z $IP ]]; then
+	IP="$(hostname -i)"
+fi
+
 ########## Set my.cnf files accordingly ##########
-IP="$(hostname -i)"
 MY_CONFIG_FILE="/etc/mysql/my.cnf"
 
 # Set 'wsrep_cluster_address' to given list of ip adresses
 if [[ $IP_ADDRESSES ]]; then
-	sed -i '10i\wsrep_cluster_address=gcomm://'$(hostname -i)','$IP_ADDRESSES $MY_CONFIG_FILE 
-	sed -i '11d' $MY_CONFIG_FILE
+	sed -i 's/^wsrep_cluster_address=.*/wsrep_cluster_address=gcomm:\/\/'"$IP"','"$IP_ADDRESSES"'/' $MY_CONFIG_FILE
 fi
 
 # Set 'wsrep_node_address' to the ip address of the current node
-sed -i '22i\wsrep_node_address='$IP $MY_CONFIG_FILE 
-sed -i '23d' $MY_CONFIG_FILE
+sed -i 's/^wsrep_node_address=.*/wsrep_node_address='"$IP"'/' $MY_CONFIG_FILE
 
-#Set 'wsrep_sst_auth' accordingly
-sed -i '31i\wsrep_sst_auth="sstuser:'$SST_USER_PASS'"' $MY_CONFIG_FILE 
-sed -i '32d' $MY_CONFIG_FILE
 ########## Set my.cnf files accordingly ##########
+sed -i 's/^wsrep_sst_auth=.*/wsrep_sst_auth="sstuser:'"$SST_USER_PASS"'"/' $MY_CONFIG_FILE
+##################################################
 
-if [[ $MASTER ]]; then  # If the node is master
+if [[ ${MASTER^^} == TRUE ]]; then  # If the node is master
 	service mysql bootstrap-pxc
 
 	mysql -e "CREATE USER 'sstuser'@'localhost' IDENTIFIED BY '"$SST_USER_PASS"';"
