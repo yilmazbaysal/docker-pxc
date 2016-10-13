@@ -2,7 +2,7 @@
 # This config file is to be sourced by garb service script.
 
 # A comma-separated list of node addresses (address[:port]) in the cluster
-GALERA_NODES="10.2.2.123:4567, 10.2.2.129:4567"
+GALERA_NODES="10.2.2.123:4569, 10.2.2.129:4569"
 
 # Galera cluster name, should be the same as on the rest of the nodes.
 GALERA_GROUP="percona_cluster"
