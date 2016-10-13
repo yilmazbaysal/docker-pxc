@@ -7,11 +7,11 @@ RUN ["apt-get", "install", "-y", "wget"]
 RUN wget https://repo.percona.com/apt/percona-release_0.1-4.jessie_all.deb
 RUN dpkg -i percona-release_0.1-4.jessie_all.deb
 RUN ["apt-get", "update"]
-RUN apt-get install -y percona-xtradb-cluster-57
-RUN ["apt-get", "install", "-y", "vim"]
-RUN ["apt-get", "install", "-y", "curl"]
+RUN apt-get install -y percona-xtradb-cluster-57 percona-xtradb-cluster-garbd-5.7
+RUN ["apt-get", "install", "-y", "vim", "curl"]
 
 COPY my.cnf /etc/mysql/
+COPY garbd /etc/default/
 
 VOLUME ["/var/lib/mysql", "/var/log/mysql"] # Make mysql data volumes
 
