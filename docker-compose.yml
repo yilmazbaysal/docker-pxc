@@ -4,15 +4,34 @@ services:
   master:
     build: .
     container_name: master
-    #environment:
+    environment:
+        - IP=10.2.2.121
+        - IP_ADDRESSES=10.2.2.129
+    ports:
+        - "3306:3306"
+        - "4444:4444"
+        - "4567:4567"
+        - "4568:4568"
     #volumes:
     #working_dir: /
-    #command: sh /scripts/master.sh
+    #entrypoint: /entrypoint.sh
+    command: mysqld --wsrep-new-cluster
+    restart: always
+    
 
-  member:
+  slave:
     build: .
-    #container_name: member
-    #environment:
+    container_name: slave
+    environment:
+        - IP=10.2.2.129
+        - IP_ADDRESSES=10.2.2.121
+    ports:
+        - "3306:3306"
+        - "4444:4444"
+        - "4567:4567"
+        - "4568:4568"
     #volumes:
     #working_dir: /
-    #command: sh /scripts/master.sh
+    #entrypoint: /entrypoint.sh
+    command: mysqld --wsrep_cluster_address=gcomm://10.2.2.121
+    restart: always
