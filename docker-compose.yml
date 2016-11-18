@@ -23,5 +23,5 @@ services:
         - "4567:4567"
         - "4567:4567/udp"
         - "4568:4568"
-    command: mysqld --wsrep_cluster_address=gcomm://10.2.2.121
+    command: mysqld --wsrep_cluster_address=gcomm://10.2.2.129
     restart: always
